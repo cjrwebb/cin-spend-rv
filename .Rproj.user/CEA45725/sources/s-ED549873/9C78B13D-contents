@@ -1,0 +1,30 @@
+## CIN: Model 6: RI Model
+
+# define intercept factor
+i_cin =~ 1*cin_2011 + 1*cin_2012 + 1*cin_2013 + 1*cin_2014 + 1*cin_2015 + 1*cin_2016 + 1*cin_2017 + 1*cin_2018 + 1*cin_2019
+
+# estimate intercept factor variance named var_i_cin
+i_cin ~~ var_i_cin*i_cin
+
+# Unobserved time varying covariates
+cin_2011 ~~ cin_2012
+cin_2012 ~~ cin_2013
+cin_2013 ~~ cin_2014
+cin_2014 ~~ cin_2015
+cin_2015 ~~ cin_2016
+cin_2016 ~~ cin_2017
+cin_2017 ~~ cin_2018
+cin_2018 ~~ cin_2019
+
+# mean structure - set means to zero except for intercept
+cin_2011 ~ 0*1
+cin_2012 ~ 0*1
+cin_2013 ~ 0*1
+cin_2014 ~ 0*1
+cin_2015 ~ 0*1
+cin_2016 ~ 0*1
+cin_2017 ~ 0*1
+cin_2018 ~ 0*1
+cin_2019 ~ 0*1
+
+i_cin ~ 1

@@ -1,0 +1,6 @@
+*.tiff
+plots/*.tiff
+.Rhistory
+.RData
+.DS_Store
+

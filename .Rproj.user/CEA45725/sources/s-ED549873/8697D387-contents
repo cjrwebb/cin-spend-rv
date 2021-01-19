@@ -1,0 +1,108 @@
+## ALT: Model 11: Unidirectional regression: Expenditure --> CIN (fixed)
+
+# define intercept and slope factor
+i_cin =~ 1*cin_2011 + 1*cin_2012 + 1*cin_2013 + 1*cin_2014 + 1*cin_2015 + 1*cin_2016 + 1*cin_2017 + 1*cin_2018 + 1*cin_2019
+i1_exp =~ 1*ehfs_sp_2011 + 1*ehfs_sp_2012 + 1*ehfs_sp_2013 + 1*ehfs_sp_2014 + 1*ehfs_sp_2015 + 1*ehfs_sp_2016 + 1*ehfs_sp_2017 + 1*ehfs_sp_2018 + 1*ehfs_sp_2019
+
+s_cin =~ 0*cin_2011 + 1*cin_2012 + 2*cin_2013 + 3*cin_2014 + 4*cin_2015 + 5*cin_2016 + 6*cin_2017 + 7*cin_2018 + 8*cin_2019
+s1_exp =~ 0*ehfs_sp_2011 + 1*ehfs_sp_2012 + 2*ehfs_sp_2013 + 2*ehfs_sp_2014 + 2*ehfs_sp_2015 + 2*ehfs_sp_2016 + 2*ehfs_sp_2017 + 2*ehfs_sp_2018 + 2*ehfs_sp_2019
+s2_exp =~ 0*ehfs_sp_2011 + 0*ehfs_sp_2012 + 0*ehfs_sp_2013 + 1*ehfs_sp_2014 + 2*ehfs_sp_2015 + 3*ehfs_sp_2016 + 4*ehfs_sp_2017 + 5*ehfs_sp_2018 + 6*ehfs_sp_2019
+
+# estimate intercept and slope factor variance 
+i_cin ~~ var_i_cin*i_cin
+s_cin ~~ var_s_cin*s_cin
+i1_exp ~~ var_i1_exp*i1_exp
+s1_exp ~~ var_s1_exp*s1_exp
+s2_exp ~~ var_s2_exp*s2_exp
+
+# estimate intercept and slope factor covariance
+i_cin ~~ cov_i_s_cin*s_cin
+i1_exp ~~ cov_i1_s1_exp*s1_exp
+i1_exp ~~ cov_i1_s2_exp*s2_exp
+s1_exp ~~ cov_s1_s2_exp*s2_exp
+
+# between factors
+i_cin ~~ cov_icin_iexp*i1_exp
+i_cin ~~ cov_icin_s1exp*s1_exp
+i_cin ~~ cov_icin_s2exp*s2_exp
+s_cin ~~ cov_scin_iexp*i1_exp
+s_cin ~~ cov_scin_s1exp*s1_exp
+s_cin ~~ cov_scin_s2exp*s2_exp
+
+# Autoregressive effects
+cin_2012 ~ a2*cin_2011
+cin_2013 ~ a2*cin_2012
+cin_2014 ~ a2*cin_2013
+cin_2015 ~ a2*cin_2014
+cin_2016 ~ a2*cin_2015
+cin_2017 ~ a2*cin_2016
+cin_2018 ~ a2*cin_2017
+cin_2019 ~ a2*cin_2018
+
+ehfs_sp_2012 ~ a1*ehfs_sp_2011
+ehfs_sp_2013 ~ a1*ehfs_sp_2012
+ehfs_sp_2014 ~ a1*ehfs_sp_2013
+ehfs_sp_2015 ~ a1*ehfs_sp_2014
+ehfs_sp_2016 ~ a1*ehfs_sp_2015
+ehfs_sp_2017 ~ a1*ehfs_sp_2016
+ehfs_sp_2018 ~ a1*ehfs_sp_2017
+ehfs_sp_2019 ~ a1*ehfs_sp_2018
+
+# Time specific residual covariance
+#ehfs_sp_2011 ~~ cin_2011
+ehfs_sp_2012 ~~ cov1*cin_2012
+ehfs_sp_2013 ~~ cov1*cin_2013
+ehfs_sp_2014 ~~ cov1*cin_2014
+ehfs_sp_2015 ~~ cov1*cin_2015
+ehfs_sp_2016 ~~ cov1*cin_2016
+ehfs_sp_2017 ~~ cov1*cin_2017
+ehfs_sp_2018 ~~ cov1*cin_2018
+ehfs_sp_2019 ~~ cov1*cin_2019
+
+# Cross-lagged regressions
+cin_2012 ~ cl1*ehfs_sp_2011
+cin_2013 ~ cl1*ehfs_sp_2012
+cin_2014 ~ cl1*ehfs_sp_2013
+cin_2015 ~ cl1*ehfs_sp_2014
+cin_2016 ~ cl1*ehfs_sp_2015
+cin_2017 ~ cl1*ehfs_sp_2016
+cin_2018 ~ cl1*ehfs_sp_2017
+cin_2019 ~ cl1*ehfs_sp_2018
+
+ehfs_sp_2012 ~ 0*cin_2011
+ehfs_sp_2013 ~ 0*cin_2012
+ehfs_sp_2014 ~ 0*cin_2013
+ehfs_sp_2015 ~ 0*cin_2014
+ehfs_sp_2016 ~ 0*cin_2015
+ehfs_sp_2017 ~ 0*cin_2016
+ehfs_sp_2018 ~ 0*cin_2017
+ehfs_sp_2019 ~ 0*cin_2018
+
+
+# mean structure - set means to zero except for intercept and slope
+cin_2011 ~ 0*1
+cin_2012 ~ 0*1
+cin_2013 ~ 0*1
+cin_2014 ~ 0*1
+cin_2015 ~ 0*1
+cin_2016 ~ 0*1
+cin_2017 ~ 0*1
+cin_2018 ~ 0*1
+cin_2019 ~ 0*1
+
+i_cin ~ mu_i_cin1*1
+s_cin ~ mu_s_cin1*1
+
+ehfs_sp_2011 ~ 0*1
+ehfs_sp_2012 ~ 0*1
+ehfs_sp_2013 ~ 0*1
+ehfs_sp_2014 ~ 0*1
+ehfs_sp_2015 ~ 0*1
+ehfs_sp_2016 ~ 0*1
+ehfs_sp_2017 ~ 0*1
+ehfs_sp_2018 ~ 0*1
+ehfs_sp_2019 ~ 0*1
+
+i1_exp ~ mu_i_exp1*1
+s1_exp ~ mu_s_exp1*1
+s2_exp ~ mu_s_exp2*1
