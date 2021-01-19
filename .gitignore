@@ -3,4 +3,5 @@ plots/*.tiff
 .Rhistory
 .RData
 .DS_Store
+.Rproj.user
 
