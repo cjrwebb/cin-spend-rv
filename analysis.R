@@ -651,10 +651,10 @@ lm(data = example_data_wide, CIN ~ year)
 
 plot1 <- example_data_long %>%
   ggplot() +
+  geom_line(stat = "smooth", method = lm, aes(x = year, y = value, lty = name), 
+            size = 1, se = F, col = "lightgrey") +
   geom_point(aes(x = year, y = value, pch = name), size = 4) +
   geom_line(aes(x = year, y = value, lty = name), size = 1) +
-  geom_line(stat = "smooth", method = lm, aes(x = year, y = value, lty = name), 
-            size = 1, se = F, col = "black", alpha = 0.4) +
   theme_minimal() +
   ylab("Spend (£100s)/CIN Rate (per 100)") +
   xlab("Year Ending") +
@@ -669,10 +669,10 @@ plot2 <- example_data_wide %>%
          CIN = CIN - (1.304167 + 0.0008333*year)) %>%
   pivot_longer(Spend:CIN) %>%
   ggplot() +
+  geom_line(stat = "smooth", method = lm, aes(x = year, y = value, lty = name), 
+            size = 1, se = F, col = "lightgrey") +
   geom_point(aes(x = year, y = value, pch = name), size = 4) +
   geom_line(aes(x = year, y = value, lty = name), size = 1) +
-  geom_line(stat = "smooth", method = lm, aes(x = year, y = value, lty = name), 
-            size = 1, se = F, col = "black", alpha = 0.4) +
   theme_minimal() +
   ylab("Spend (£100s)/CIN Rate (per 100) (Trend Centred)") +
   xlab("Year Ending") +
@@ -692,9 +692,9 @@ plot3 <- example_data_wide %>%
          CIN = CIN - (1.304167 + 0.0008333*year)) %>%
   pivot_longer(Spend:CIN) %>%
   ggplot() +
+  geom_line(aes(x = year, y = value, lty = name), size = 1, col = "lightgrey") +
+  geom_hline(yintercept = 0, size = 0.2, col = "lightgrey") +
   geom_point(aes(x = year, y = value, pch = name), size = 4) +
-  geom_line(aes(x = year, y = value, lty = name), size = 1, alpha = 0.2) +
-  geom_hline(yintercept = 0, size = 0.5, alpha = 0.3) +
   geom_curve(aes(x = 2011, xend = 2011.95, y = 0.0267, yend = -0.0308), 
              arrow = arrow(type = "open", length = unit(0.1, "in"))) +
   geom_curve(aes(x = 2012, xend = 2013, y = 0.0134, yend = -0.0750), 
@@ -726,6 +726,19 @@ figure2
 # Tiff version (for journal)
 ggsave(plot = figure2, filename = "fig_2.tiff", path = "plots/", 
        width = 12, height = 10, units = "in", device = "tiff", dpi = 400)
+
+ggsave(plot = figure2, filename = "fig_2.tiff", path = "plots/", 
+       width = 8, height = 6, units = "in", device = "tiff", dpi = 400,
+       scale = 1.4, compression = "lzw")
+
+ggsave(plot = figure2, filename = "fig_2.pdf", path = "plots/", 
+       width = 8, height = 6, units = "in", device = "pdf", dpi = 400,
+       scale = 1.4)
+
+# EPS version
+ggsave(plot = figure2, filename = "figure_4.eps", path = "plots/", 
+       width = 8, height = 6, units = "in", device = "eps", dpi = 600,
+       scale = 1.5)
 
 # PNG version
 ggsave(plot = figure2, filename = "fig_2.png", path = "plots/", 
@@ -827,7 +840,7 @@ lg_plot1 <- growth_preds %>%
                        "CIN Rate Latent Growth (Adjusted for Within-LA Dynamics)")) %>%
   ggplot() +
   geom_line(aes(x = year+2011, y = exp(value), group = id),
-            alpha = 0.2, stat = "smooth", method = "loess") +
+            size = 0.1, stat = "smooth", method = "loess") +
   ylab("Predicted Value (Back-transformed)") +
   xlab("Year Ending") +
   scale_x_continuous(breaks = seq(2011, 2019, 2)) +
@@ -880,12 +893,16 @@ fig3
 
 # Tiff version (for journal)
 ggsave(plot = fig3, filename = "fig_3.tiff", path = "plots/", 
-       width = 12, height = 10, units = "in", device = "tiff", dpi = 400)
+       width = 8, height = 6, units = "in", device = "tiff", dpi = 300,
+       scale = 1.3, compression = "lzw")
+
+# EPS version
+ggsave(plot = fig3, filename = "figure_5.eps", path = "plots/", 
+       width = 8, height = 6, units = "in", device = "eps", dpi = 600,
+       scale = 1.5)
 
 # PNG version
 ggsave(plot = fig3, filename = "fig_3.png", path = "plots/", 
        width = 12, height = 10, units = "in", device = "png", dpi = 800)
-
-
 
 
